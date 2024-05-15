@@ -4,3 +4,4 @@ In this tutorial, we'll guide you through building a full-stack login and regist
 ## Instructions
 
 * Visit https://vitejs.dev/guide/ and copy NPM, Yarn, PNpm, or Bun to paste it on your client terminal 
+* run npm i react-router-dom and npm i axios
