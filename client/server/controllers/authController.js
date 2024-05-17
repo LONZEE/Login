@@ -23,16 +23,18 @@ const registerUser = async (req, res) => {
 
         // Register a new user
 
-        const user = new User.create({
+        const user = await User.create({
             name,
             email,
             password
         });
 
+        console.log(user);
         return res.json(user);
+
     } catch (error) {
         // Handle error
-        return res.json({ error: 'Something went wrong' });
+        console.log(error);
     }
 };
 
