@@ -1,7 +1,7 @@
 const express = require('express'); // Express
 const router = express.Router();    // Express Router
 const cors = require('cors');       // CORS
-const { test } = require('../controllers/authController'); // Controller
+const { test , registerUser } = require('../controllers/authController'); // Controller
 
 //middleware
 router.use(cors(
@@ -12,5 +12,6 @@ router.use(cors(
 ));
 
 router.get('/', test);
+router.post('/register', registerUser);
 
 module.exports = router;
