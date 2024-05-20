@@ -9,15 +9,15 @@ const registerUser = async (req, res) => {
     // res.json('Registering a new user');
     try {
         const { name, email, password } = req.body;
-        if (!name) {
+        if (!name) {    // Name is required
             return res.json({ error: 'Name is required' });
         }
         
-        if (!password || password.length < 6) {
+        if (!password || password.length < 6) {     // Password must be at least 6 characters long
             return res.json({ error: 'Password is required' });
         }
 
-        const exist = await User.findOne({ email });
+        const exist = await User.findOne({ email });    // Check if email is already taken
         if (exist) {
             return res.json({ error: 'Email is already taken' });
         }
