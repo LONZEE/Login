@@ -1,5 +1,7 @@
 const User = require('../models/User');
 const { hashPassword, comparePassword } = require('../helper/auth');
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv').config();
 
 const test = (req, res) => {
     res.json('This is a TEST');   // Send a JSON response
@@ -12,7 +14,7 @@ const registerUser = async (req, res) => {
         if (!name) {    // Name is required
             return res.json({ error: 'Name is required' });
         }
-        
+
         if (!password || password.length < 6) {     // Password must be at least 6 characters long
             return res.json({ error: 'Password is required' });
         }
@@ -44,28 +46,32 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const user = await User.findOne({email});
+        const user = await User.findOne({ email });
         if (user) {
-            return res.json({ message: 'User found'});
+            return res.json({ message: 'User found' });
         }
         return res.json({ error: 'User not found' });
     }
     catch (error) {
         console.log(error);
     }
-        const match = await comparePassword(password, user.password);  // user.password is the hashed password created in the register function
-        if (match) {
+    const match = await comparePassword(password, user.password);  // user.password is the hashed password created in the register function
+    if (match) {
+        jwt.sign({ email: user.email, id: user._id, name: user.name }, process.env.JWT_SECRET, {}, (err, token) => {
+            if (err) throw err;
+            res.cookie('token', token).json(user);
             return res.json({ message: 'User logged in successfully' });
-        } else {
-            return res.json({ error: 'Invalid credentials' });
-        }
+        });
+    } else {
+        return res.json({ error: 'Invalid credentials' });
+    }
 }
 
 
 
 
-module.exports = {
-    test,
-    registerUser,
-    loginUser
-};
+    module.exports = {
+        test,
+        registerUser,
+        loginUser
+    };
