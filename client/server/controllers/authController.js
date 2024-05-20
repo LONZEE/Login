@@ -39,7 +39,30 @@ const registerUser = async (req, res) => {
     }
 };
 
+// login
+
+const loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({email});
+        if (!user) {
+            return res.json({ error: 'Invalid credentials' });
+        }
+        const match = await comparePassword(password, user.password);  // user.password is the hashed password created in the register function
+        if (!match) {
+            return res.json({ error: 'Invalid credentials' });
+        }
+        return res.json(user);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+
+
 module.exports = {
     test,
-    registerUser
+    registerUser,
+    loginUser
 };
