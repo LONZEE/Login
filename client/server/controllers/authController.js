@@ -45,19 +45,22 @@ const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await User.findOne({email});
-        if (!user) {
-            return res.json({ error: 'Invalid credentials' });
+        if (user) {
+            return res.json({ message: 'User found'});
         }
-        const match = await comparePassword(password, user.password);  // user.password is the hashed password created in the register function
-        if (!match) {
-            return res.json({ error: 'Invalid credentials' });
-        }
-        return res.json(user);
+        return res.json({ error: 'User not found' });
     }
     catch (error) {
         console.log(error);
     }
+        const match = await comparePassword(password, user.password);  // user.password is the hashed password created in the register function
+        if (match) {
+            return res.json({ message: 'User logged in successfully' });
+        } else {
+            return res.json({ error: 'Invalid credentials' });
+        }
 }
+
 
 
 
