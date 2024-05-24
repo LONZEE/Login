@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv').config();
 
 const test = (req, res) => {
-    res.json('This is a TEST');   // Send a JSON response
+    res.json('BLagh blagh');   // Send a JSON response
 };
 
 const registerUser = async (req, res) => {
